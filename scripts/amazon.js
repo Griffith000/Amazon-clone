@@ -1,4 +1,3 @@
- 
 
 let productsHTML = '';
 products.forEach( (product) => {
@@ -79,8 +78,12 @@ document.querySelectorAll('.js-add-to-cart-button')
             quantity:1
           });
         }
-      
-      console.log(cart);
+      let cartQuatity = 0; 
+      cart.forEach( (item) => {
+        cartQuatity += item.quantity;
+      });
+      document.querySelector('.js-cart-quantity')
+        .innerHTML = cartQuatity;
     });
   });
 
