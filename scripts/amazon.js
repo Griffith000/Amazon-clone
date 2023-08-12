@@ -57,37 +57,46 @@ products.forEach( (product) => {
 document.querySelector('.js-products-grid')
   .innerHTML = productsHTML; 
 
+
+function updateCartQuantity(){
+  let cartQuatity = 0; 
+  cart.forEach( (item) => {
+    cartQuatity += item.quantity;
+  });
+  document.querySelector('.js-cart-quantity')
+    .innerHTML = cartQuatity;
+
+}
+
 document.querySelectorAll('.js-add-to-cart-button')
   .forEach((button) => {
     button.addEventListener('click' , () => {
       const {productId}= button.dataset;
 
-      let matchingItem ;
-      
       const checkMarksTimeOuts = {};
+      const quantitySelec = document.querySelector(`.js-quantity-selector-${productId}`);
+      const quantity = Number(quantitySelec.value);
 
+      const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
+      //const checkMark = addedCheckSelec.value;
+
+      addedCheckSelec.classList.add('checkMark');
+
+      const previousTimeoutId =  checkMarksTimeOuts [productId];
+      if (previousTimeoutId) {
+        clearTimeout(previousTimeoutId);
+      }
+
+      const timeOutId = setTimeout( () => {
+        addedCheckSelec.classList.remove('checkMark');
+      },2000);
+
+    let matchingItem ;
       cart.forEach((item) => {
         if (productId === item.productId){
           matchingItem = item;
         }
         });
-        const quantitySelec = document.querySelector(`.js-quantity-selector-${productId}`);
-        const quantity = Number(quantitySelec.value);
-
-        const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
-        //const checkMark = addedCheckSelec.value;
-
-        addedCheckSelec.classList.add('checkMark');
-
-        const previousTimeoutId =  checkMarksTimeOuts [productId];
-        if (previousTimeoutId) {
-          clearTimeout(previousTimeoutId);
-        }
-  
-        const timeOutId = setTimeout( () => {
-          addedCheckSelec.classList.remove('checkMark');
-        },2000);
-
         if(matchingItem){
           matchingItem.quantity++;
         }
@@ -96,14 +105,9 @@ document.querySelectorAll('.js-add-to-cart-button')
             productId,
             quantity
           });
-         
         }
-      let cartQuatity = 0; 
-      cart.forEach( (item) => {
-        cartQuatity += item.quantity;
-      });
-      document.querySelector('.js-cart-quantity')
-        .innerHTML = cartQuatity;
+    updateCartQuantity();
+     
     });
   });
 
