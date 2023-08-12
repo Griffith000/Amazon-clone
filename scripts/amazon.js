@@ -40,7 +40,7 @@ products.forEach( (product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-added-to-cart-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
@@ -58,12 +58,11 @@ document.querySelector('.js-products-grid')
 document.querySelectorAll('.js-add-to-cart-button')
   .forEach((button) => {
     button.addEventListener('click' , () => {
-
-     
-
-      const productId = button.dataset.productId;
+      const {productId}= button.dataset;
 
       let matchingItem ;
+      
+      const checkMarksTimeOuts = {};
 
       cart.forEach((item) => {
         if (productId === item.productId){
@@ -71,15 +70,29 @@ document.querySelectorAll('.js-add-to-cart-button')
         }
         });
         const quantitySelec = document.querySelector(`.js-quantity-selector-${productId}`);
-        const quantity = quantitySelec.value;
+        const quantity = Number(quantitySelec.value);
+
+        const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
+        //const checkMark = addedCheckSelec.value;
+
+        addedCheckSelec.classList.add('checkMark');
+
+        const previousTimeoutId =  checkMarksTimeOuts [productId];
+        if (previousTimeoutId) {
+          clearTimeout(previousTimeoutId);
+        }
+  
+        const timeOutId = setTimeout( () => {
+          addedCheckSelec.classList.remove('checkMark');
+        },2000);
 
         if(matchingItem){
           matchingItem.quantity++;
         }
         else{
           cart.push({
-            productId:productId,
-            quantity: Number(quantity)
+            productId,
+            quantity
           });
          
         }
@@ -90,11 +103,6 @@ document.querySelectorAll('.js-add-to-cart-button')
       document.querySelector('.js-cart-quantity')
         .innerHTML = cartQuatity;
     });
-
-   
-
-
-
   });
 
 
