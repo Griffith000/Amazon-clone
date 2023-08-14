@@ -1,4 +1,4 @@
-import {cart ,saveToStorage} from '../data/cart.js';
+import {cart ,addToCart,saveToStorage} from '../data/cart.js';
 import {products} from '../data/products.js';
 import{formatCurrency} from'./utils/money.js';
 
@@ -65,7 +65,19 @@ function updateCartQuantity(){
   });
   document.querySelector('.js-cart-quantity')
     .innerHTML = cartQuatity;
+}
 
+function checkMarkMessage(productId){
+  const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
+  addedCheckSelec.classList.add('checkMark');
+
+  const previousTimeoutId =  checkMarksTimeOuts [productId];
+  if (previousTimeoutId) {
+    clearTimeout(previousTimeoutId);
+  }
+  const timeOutId = setTimeout( () => {
+    addedCheckSelec.classList.remove('checkMark');
+  },2000);
 }
 
 const checkMarksTimeOuts = {};
@@ -75,38 +87,12 @@ document.querySelectorAll('.js-add-to-cart-button')
     button.addEventListener('click' , () => {
       const {productId}= button.dataset;
 
-        let matchingItem ;
-        cart.forEach((item) => {
-          if (productId === item.productId){
-            matchingItem = item;
-          }
-        });
-        const quantitySelec = document.querySelector(`.js-quantity-selector-${productId}`);
-        const quantity = Number(quantitySelec.value);
-
-        if(matchingItem){
-          matchingItem.quantity++;
-        }
-        else{
-          cart.push({
-            productId,
-            quantity
-          });
-        }
+        addToCart(productId);
         saveToStorage();
         updateCartQuantity();
+        checkMarkMessage(productId);
   
-        const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
-        addedCheckSelec.classList.add('checkMark');
-  
-        const previousTimeoutId =  checkMarksTimeOuts [productId];
-        if (previousTimeoutId) {
-          clearTimeout(previousTimeoutId);
-        }
-        const timeOutId = setTimeout( () => {
-          addedCheckSelec.classList.remove('checkMark');
-        },2000);
-
+        
     });
   });
 
