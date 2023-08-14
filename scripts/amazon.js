@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import {cart ,saveToStorage} from '../data/cart.js';
 import {products} from '../data/products.js';
 import{formatCurrency} from'./utils/money.js';
 
@@ -93,6 +93,7 @@ document.querySelectorAll('.js-add-to-cart-button')
             quantity
           });
         }
+        saveToStorage();
         updateCartQuantity();
   
         const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
