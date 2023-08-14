@@ -1,5 +1,6 @@
 import {cart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import{formatCurrency} from'./utils/money.js';
 
 let productsHTML = '';
 products.forEach( (product) => {
@@ -22,7 +23,7 @@ products.forEach( (product) => {
       </div>
 
       <div class="product-price">
-        $${(product.priceCents /100 ).toFixed(2)}
+        $${formatCurrency(product.priceCents)}
       </div>
 
       <div class="product-quantity-container">
@@ -73,23 +74,7 @@ document.querySelectorAll('.js-add-to-cart-button')
     button.addEventListener('click' , () => {
       const {productId}= button.dataset;
 
-      const checkMarksTimeOuts = {};
-      const quantitySelec = document.querySelector(`.js-quantity-selector-${productId}`);
-      const quantity = Number(quantitySelec.value);
-
-      const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
-      //const checkMark = addedCheckSelec.value;
-
-      addedCheckSelec.classList.add('checkMark');
-
-      const previousTimeoutId =  checkMarksTimeOuts [productId];
-      if (previousTimeoutId) {
-        clearTimeout(previousTimeoutId);
-      }
-
-      const timeOutId = setTimeout( () => {
-        addedCheckSelec.classList.remove('checkMark');
-      },2000);
+     
 
     let matchingItem ;
       cart.forEach((item) => {
@@ -106,7 +91,25 @@ document.querySelectorAll('.js-add-to-cart-button')
             quantity
           });
         }
-    updateCartQuantity();
+        const checkMarksTimeOuts = {};
+      const quantitySelec = document.querySelector(`.js-quantity-selector-${productId}`);
+      const quantity = Number(quantitySelec.value);
+
+      const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
+      //const checkMark = addedCheckSelec.value;
+
+      addedCheckSelec.classList.add('checkMark');
+
+      const previousTimeoutId =  checkMarksTimeOuts [productId];
+      if (previousTimeoutId) {
+        clearTimeout(previousTimeoutId);
+      }
+
+      const timeOutId = setTimeout( () => {
+        addedCheckSelec.classList.remove('checkMark');
+      },2000);
+      updateCartQuantity();
+      
      
     });
   });
