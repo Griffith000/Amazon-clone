@@ -1,4 +1,4 @@
-import {cart ,addToCart,saveToStorage} from '../data/cart.js';
+import {cart ,addToCart,saveToStorage,calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import{formatCurrency} from'./utils/money.js';
 
@@ -59,13 +59,11 @@ document.querySelector('.js-products-grid')
   .innerHTML = productsHTML; 
 
 function updateCartQuantity(){
-  let cartQuatity = 0; 
-  cart.forEach( (item) => {
-    cartQuatity += item.quantity;
-  });
+  const cartQuatity = calculateCartQuantity();
   document.querySelector('.js-cart-quantity')
     .innerHTML = cartQuatity;
 }
+updateCartQuantity();
 
 function checkMarkMessage(productId){
   const addedCheckSelec = document.querySelector(`.js-added-to-cart-${productId}`);
