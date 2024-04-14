@@ -8,7 +8,6 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [
     productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d" ,
     quantity: 1 ,
     deliveryOptionID : '2'
-
   }
 ];
 
@@ -73,4 +72,16 @@ export function updateQuantity( productId , newQuantity){
   matchingItem.quantity = newQuantity ;
   saveToStorage();
   
+}
+
+
+export function updateDeliveryOption(productId,deliveryOptionID){
+  let matchingItem ;
+  cart.forEach((item) => {
+    if (productId === item.productId){
+      matchingItem = item;
+    }
+  });
+  matchingItem.deliveryOptionID = deliveryOptionID;
+  saveToStorage();
 }
