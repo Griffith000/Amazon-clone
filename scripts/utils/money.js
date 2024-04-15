@@ -1,7 +1,6 @@
-export function formatCurrency(priceCents){
+export function formatCurrency(priceCents) {
   return (Math.round(priceCents) / 100).toFixed(2);
 }
 
-
 export default formatCurrency;
-//each file can only have 1 default export 
+//each file can only have 1 default export
