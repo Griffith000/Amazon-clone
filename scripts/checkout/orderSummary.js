@@ -5,12 +5,12 @@ import {
     updateQuantity,
     updateDeliveryOption,
   } from "../../data/cart.js";
-  import { products } from "../../data/products.js"; // {...} named export
+  import { products,getProduct } from "../../data/products.js"; // {...} named export
   import { formatCurrency } from "../utils/money.js";
   import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js"; // coding coming from the internet (Esm version of the library)
   import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; // default export
   
-  import { deliveryOption } from "../../data/deliveryOption.js";
+  import { deliveryOption,getDeliveryOption } from "../../data/deliveryOption.js";
   
   // hello();
   
@@ -26,21 +26,11 @@ import {
     cart.forEach((cartItem) => {
       const { productId } = cartItem;
   
-      let matchingProduct;
-  
-      products.forEach((product) => {
-        if (product.id === productId) {
-          matchingProduct = product;
-        }
-      });
+      const  matchingProduct = getProduct (productId);
   
       const deliveryOptionID = cartItem.deliveryOptionID;
-      let deliveryOpt;
-      deliveryOption.forEach((option) => {
-        if (option.id === deliveryOptionID) {
-          deliveryOpt = option;
-        }
-      });
+      const deliveryOpt = getDeliveryOption (deliveryOptionID);
+ 
       const today1 = dayjs();
       const deliveryDate1 = today1.add(deliveryOpt.deliveryDays, "days");
       const dateString1 = deliveryDate1.format("dddd ,MMMM D");

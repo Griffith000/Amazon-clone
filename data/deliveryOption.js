@@ -18,3 +18,12 @@ export const deliveryOption = [
 }
 
 ];
+export function getDeliveryOption (deliveryOptionID) {
+    let matchingDeliveryOption;
+    deliveryOption.forEach((delivOpt) => {
+        if (delivOpt.id === deliveryOptionID) {
+            matchingDeliveryOption = delivOpt;
+        }
+    });
+    return matchingDeliveryOption;
+}
